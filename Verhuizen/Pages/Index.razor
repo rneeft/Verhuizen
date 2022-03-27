@@ -6,4 +6,23 @@
 
 Welcome to your new app.
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+<AuthorizeView>
+    <NotAuthorized>
+        <span>Please sign in</span>
+    </NotAuthorized>
+    <Authorized>
+        <BlazorBarcodeScanner.ZXing.JS.BarcodeReader OnCodeReceived="LocalReceivedBarcodeText" />
+        <div>@BoxValue</div>
+    </Authorized>
+</AuthorizeView>
+
+@code{
+    public string BoxValue { get; set; } = "";
+
+    private void LocalReceivedBarcodeText(BarcodeReceivedEventArgs args)
+    {
+        this.BoxValue = args.BarcodeText;
+        StateHasChanged();
+    }
+
+}

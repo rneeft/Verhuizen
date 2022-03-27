@@ -1,0 +1,25 @@
+﻿@page "/login"
+@inject NavigationManager NavigationManager;
+@inject ILocalStorageService localStorageService
+@inject AuthenticationStateProvider authProvider
+
+<h3>Login</h3>
+
+<EditForm Model="token" OnSubmit="HandleLogin">
+
+    <InputText @bind-Value="token.ContainerToken"></InputText>
+    <button type="submit" class="btn btn-primary">Login</button>
+
+</EditForm>
+
+@code {
+    Token token = new();
+
+    async Task HandleLogin()
+    {
+        await localStorageService.SetItemAsStringAsync("key", token.ContainerToken);
+        await authProvider.GetAuthenticationStateAsync();
+
+        NavigationManager.NavigateTo(@"\");
+    }
+}
